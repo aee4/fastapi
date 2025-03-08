@@ -43,8 +43,10 @@ inventory = {
 }
 
 @app.get("/get-item/{item_id}")
-def get_item(item_id : int = Path(..., description= "ID for the selected item")):
+def get_item(item_id : int = Path(..., description= "ID for the selected item", gt = 0 , lt = 45)):
     return inventory[item_id]
+
+#the path parameters helps to give constraint to the id aside the type
+
     
   # query parameters  
-  
