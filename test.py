@@ -61,5 +61,7 @@ def get_item(test : int,item_name : Optional[str] = Query( min_length=2, max_len
             return inventory[item_id]
     
     return {"message": "Item not found"}  
+#http://127.0.0.1:8000/get-item-by-name?item_name=Banana
+#http://127.0.0.1:8000/get-item-by-name?item_name=Banana&test=value --- two query parameters
 
 
