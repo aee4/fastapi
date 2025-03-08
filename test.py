@@ -1,4 +1,6 @@
 from fastapi import FastAPI, Path
+from fastapi.params import Query
+from typing import Optional # makes the argument optional
 
 # Initialize a FastAPI app
 app = FastAPI()
@@ -42,11 +44,22 @@ inventory = {
       } 
 }
 
-@app.get("/get-item/{item_id}")
+@app.get("/get-item-by-id/{item_id}")
 def get_item(item_id : int = Path(..., description= "ID for the selected item", gt = 0 , lt = 45)):
     return inventory[item_id]
 
 #the path parameters helps to give constraint to the id aside the type
 
     
-  # query parameters  
+  # query parameters
+  # by default if the parameter of the fxn is not in the path to the endpoint, it'll be a query parameter  
+@app.get("/get-item-by-name")
+def get_item(test : int,item_name : Optional[str] = Query( min_length=2, max_length=50, description="Item name to search")):
+# the Query() is a function that helps to give constraint to the query parameter
+    for item_id in inventory:
+        if inventory[item_id]["name"] == item_name:
+            return inventory[item_id]
+    
+    return {"message": "Item not found"}  
+
+
