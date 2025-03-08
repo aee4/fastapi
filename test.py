@@ -1,23 +1,18 @@
 from fastapi import FastAPI
 
-#Initializes a new FastAPI app.
+# Initialize a FastAPI app
 app = FastAPI()
 
-#http methods : get, post, put, delete...
+# HTTP methods:
+# GET: Retrieve data
+# POST: Create new data (e.g., user signup, login)
+# PUT: Update existing data
+# DELETE: Remove data
 
-#get method returns data
-#post method creates new data ; user login , user signup 
-#put method modifies the data 
-#delete method deletes the data
-
-
-# without '@' app.method() is just a fastapi method
-#@ is a decorator that registers the fxn as a route in FastApi
-#it can be done manually but thats extra code
-#the function another the endpoint determines what should happen
+# '@' is a decorator that registers the function as a FastAPI route
+# Without '@', app.method() is just a FastAPI method and requires manual registration
 @app.get("/")
 def home():
-    return {"message": "mimi's fastapi workout"}
+    return {"message": "Mimi's FastAPI workout 💪🔥"}
 
-#to run this : uvicorn filename: app --reload
- 
+# Run the app with: uvicorn filename:app --reload
