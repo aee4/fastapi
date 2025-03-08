@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 
 # Initialize a FastAPI app
 app = FastAPI()
@@ -13,6 +13,38 @@ app = FastAPI()
 # Without '@', app.method() is just a FastAPI method and requires manual registration
 @app.get("/")
 def home():
-    return {"message": "Mimi's FastAPI workout 💪🔥"}
+    return {"message": "Eyram's FastAPI workout 💪🔥"}
+
+@app.get("/about")
+def about():
+    return {"message": "SA TA NA MA"}
 
 # Run the app with: uvicorn filename:app --reload
+
+#path parameters 
+inventory = {
+     1: {
+         "name": "Apple",
+         "price": 1.00,
+         "quantity": 100
+     },
+
+     2: {
+         "name": "Banana",
+         "price": 0.50,
+         "quantity": 50
+       },
+
+      3: {
+          "name": "Orange",
+          "price": 1.50,
+          "quantity": 75
+      } 
+}
+
+@app.get("/get-item/{item_id}")
+def get_item(item_id : int = Path(..., description= "ID for the selected item")):
+    return inventory[item_id]
+    
+  # query parameters  
+  
