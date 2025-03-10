@@ -1,6 +1,13 @@
 from fastapi import FastAPI, Path
 from fastapi.params import Query
 from typing import Optional # makes the argument optional
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: int
+    brand: Optional[str] = None
+    
 
 # Initialize a FastAPI app
 app = FastAPI()
@@ -64,4 +71,7 @@ def get_item(test : int,item_name : Optional[str] = Query( min_length=2, max_len
 #http://127.0.0.1:8000/get-item-by-name?item_name=Banana
 #http://127.0.0.1:8000/get-item-by-name?item_name=Banana&test=value --- two query parameters
 
-
+#request body
+@app.post("/create-item")
+def create_function(item: Item):
+    return {}
