@@ -35,19 +35,19 @@ inventory = {
      1: {
          "name": "Apple",
          "price": 1.00,
-         "quantity": 100
+         "brand": 100
      },
 
      2: {
          "name": "Banana",
          "price": 0.50,
-         "quantity": 50
+         "brand": 50
        },
 
       3: {
           "name": "Orange",
           "price": 1.50,
-          "quantity": 75
+          "brand": 75
       } 
 }
 
@@ -72,6 +72,10 @@ def get_item(test : int,item_name : Optional[str] = Query( min_length=2, max_len
 #http://127.0.0.1:8000/get-item-by-name?item_name=Banana&test=value --- two query parameters
 
 #request body
-@app.post("/create-item")
-def create_function(item: Item):
-    return {}
+@app.post("/create-item/{item_id}")
+def create_item(item_id : int,item: Item ):
+    if item_id in inventory:
+        return {"message": "Item already exists"}
+    
+    inventory[item_id] = Item
+    return inventory[item_id]
