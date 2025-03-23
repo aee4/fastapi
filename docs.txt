@@ -1,0 +1,124 @@
+
+## 📦 Installation
+
+pip install fastapi uvicorn
+
+## 🧰 Your First FastAPI App
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+async def read_root():
+    return {"message": "Hello, FastAPI!"}
+```
+Run it with:
+```bash
+uvicorn main:app --reload
+```
+
+## 📊 Interactive API Docs
+1. **Swagger UI**: `/docs`
+2. **ReDoc**: `/redoc`
+
+## 🗂️ Path Parameters
+```python
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    return {"item_id": item_id}
+```
+Access: `/items/42` returns:
+```json
+{
+  "item_id": 42
+}
+```
+
+## 📝 Query Parameters
+```python
+@app.get("/items/")
+async def read_items(skip: int = 0, limit: int = 10):
+    return {"skip": skip, "limit": limit}
+```
+Example: `/items/?skip=5&limit=20`
+
+## 📥 Request Body (POST)
+```python
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: float
+    is_offer: bool = False
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+```
+Example request body:
+```json
+{
+  "name": "Laptop",
+  "price": 999.99,
+  "is_offer": true
+}
+```
+
+## 🧪 Automatic Validation
+FastAPI validates input automatically and returns clear errors.
+
+Example error for wrong type:
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "price"],
+      "msg": "value is not a valid float",
+      "type": "type_error.float"
+    }
+  ]
+}
+```
+
+## 🔐 Dependency Injection
+Reusable logic like authentication or database access is easy:
+```python
+from fastapi import Depends
+
+async def common_parameters(q: str = None, skip: int = 0, limit: int = 10):
+    return {"q": q, "skip": skip, "limit": limit}
+
+@app.get("/items/")
+async def read_items(commons: dict = Depends(common_parameters)):
+    return commons
+```
+
+## 🔒 Security (OAuth2, JWT)
+FastAPI supports OAuth2 and JWT for authentication:
+```python
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+@app.get("/users/me")
+async def read_users_me(token: str = Depends(oauth2_scheme)):
+    return {"token": token}
+```
+
+## 📚 FastAPI Cheat Sheet
+| Feature            | Example                          |
+|--------------------|----------------------------------|
+| **Install**        | `pip install fastapi uvicorn`    |
+| **Run App**        | `uvicorn main:app --reload`      |
+| **Path Param**     | `@app.get("/items/{item_id}")`   |
+| **Query Param**    | `@app.get("/items/")`            |
+| **Request Body**   | `@app.post("/items/")`           |
+| **Docs URL**       | `/docs` and `/redoc`             |
+| **Middleware**     | `add_middleware()`               |
+| **Auth**           | OAuth2, JWT, etc.                |
+
+## 🏁 Summary
+FastAPI is a modern Python web framework that combines speed, ease of use, and advanced features like automatic docs and async support. It's ideal for building APIs quickly while maintaining robust data validation and security.
+
